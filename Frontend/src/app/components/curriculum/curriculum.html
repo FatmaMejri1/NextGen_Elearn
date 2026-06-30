@@ -1,0 +1,92 @@
+<section class="formations-section" id="programme" *ngIf="curriculum">
+  <div class="container">
+    <div class="section-header">
+      <h2>{{ curriculum.title }}</h2>
+      <p class="sub-text">{{ curriculum.subtitle }}</p>
+    </div>
+
+    <div class="carousel-controls">
+      <button class="scroll-btn left" (click)="scrollLeft()">
+        <svg viewBox="0 0 24 24" fill="none" width="20" height="20">
+          <path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+      <button class="scroll-btn right" (click)="scrollRight()">
+        <svg viewBox="0 0 24 24" fill="none" width="20" height="20">
+          <path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+    </div>
+
+    <div class="formations-track" #track>
+      <div class="formation-card" *ngFor="let f of curriculum.formations; let i = index">
+        <div class="card-icon">{{ f.icon }}</div>
+        <div class="card-tag">{{ f.tag }}</div>
+        <h3 class="card-title">{{ f.title }}</h3>
+        <p class="card-desc">{{ f.description }}</p>
+        <div class="card-meta">
+          <span class="meta-item">📚 {{ f.modules }} {{ curriculum.modulesLabel }}</span>
+          <span class="meta-item">⏱ {{ f.duration }}</span>
+        </div>
+        <div class="card-topics">
+          <span class="topic" *ngFor="let t of f.topics">{{ t }}</span>
+        </div>
+        <a *ngIf="f.ctaLink.startsWith('/'); else externalFormationCta"
+           [routerLink]="f.ctaLink"
+           class="card-cta">
+          {{ f.ctaText || curriculum.ctaText }}
+        </a>
+        <ng-template #externalFormationCta>
+          <a [href]="f.ctaLink" class="card-cta">
+            {{ f.ctaText || curriculum.ctaText }}
+          </a>
+        </ng-template>
+      </div>
+    </div>
+
+    <div class="scroll-dots">
+      <span class="dot" *ngFor="let f of curriculum.formations; let i = index"
+            [class.active]="activeIndex === i"
+            (click)="scrollToCard(i)">
+      </span>
+    </div>
+  </div>
+</section>
+
+<section class="languages-section" id="languages" *ngIf="curriculum">
+  <div class="container">
+    <div class="section-header">
+      <h2>{{ curriculum.languagesTitle }}</h2>
+    </div>
+
+    <div class="carousel-controls lang-controls">
+      <button class="scroll-btn left" (click)="scrollLeftLang()">
+        <svg viewBox="0 0 24 24" fill="none" width="20" height="20">
+          <path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+      <button class="scroll-btn right" (click)="scrollRightLang()">
+        <svg viewBox="0 0 24 24" fill="none" width="20" height="20">
+          <path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+    </div>
+
+    <div class="languages-track" #langTrack>
+      <div class="language-card" *ngFor="let lang of curriculum.languages">
+        <img [src]="'https://flagcdn.com/w40/' + lang.flagCode + '.png'" [alt]="lang.name" class="flag-img" loading="lazy">
+        <div class="lang-info">
+          <span class="lang-name">{{ lang.name }}</span>
+          <span class="lang-level">• {{ lang.level }}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="scroll-dots">
+      <span class="dot" *ngFor="let lang of curriculum.languages; let i = index"
+            [class.active]="activeIndexLang === i"
+            (click)="scrollToLang(i)">
+      </span>
+    </div>
+  </div>
+</section>

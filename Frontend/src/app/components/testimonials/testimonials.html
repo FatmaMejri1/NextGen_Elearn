@@ -1,0 +1,68 @@
+<section class="testimonials" id="testimonials">
+  <div class="container">
+    <h2>شنوّا يقولو علينا</h2>
+    <p class="sub">
+      عشرات رواد الأعمال التوانسة بدّلوا نتائجهم بفضل منهج Next Generation.
+    </p>
+
+    <!-- Video Testimonials Carousel -->
+    <div class="carousel-controls">
+      <button class="scroll-btn left" (click)="scrollLeft()">
+        <svg viewBox="0 0 24 24" fill="none" width="20" height="20">
+          <path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+      <button class="scroll-btn right" (click)="scrollRight()">
+        <svg viewBox="0 0 24 24" fill="none" width="20" height="20">
+          <path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+    </div>
+
+    <div class="video-track" #track>
+      <div class="video-card" *ngFor="let vid of videoTestimonials; let i = index">
+        <div class="vid-thumb">
+          
+          <!-- Custom Thumbnail State -->
+          <ng-container *ngIf="playingIndex !== i">
+            <img [src]="'https://img.youtube.com/vi/' + getVideoId(vid) + '/hqdefault.jpg'" class="custom-thumbnail" alt="Testimonial">
+            <div class="play-sm" (click)="playVideo(i)">
+              <svg viewBox="0 0 24 24" fill="white" width="24" height="24">
+                <path d="M8 5v14l11-7z"/>
+              </svg>
+            </div>
+            <div class="vid-overlay">
+              <div>
+                <div class="vid-name">{{ vid.name }}</div>
+                <div class="vid-role" style="font-size: 11px; color: var(--cta-green); font-weight: 600;">{{ vid.role }}</div>
+              </div>
+            </div>
+          </ng-container>
+
+          <!-- Playing Video State -->
+          <ng-container *ngIf="playingIndex === i">
+            <iframe [src]="getSafeUrl(vid)" width="100%" height="100%" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="border-radius: 16px;"></iframe>
+            <!-- Invisible overlay to intercept clicks and stop the video, preventing redirection to YouTube -->
+            <div class="iframe-blocker" (click)="stopVideo($event)"></div>
+          </ng-container>
+
+        </div>
+        <div class="card-body">
+          <p class="card-desc">{{ vid.desc }}</p>
+          <div class="card-tags">
+            <span class="card-tag" *ngFor="let tag of vid.tags">{{ tag }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="scroll-dots">
+      <span class="dot" *ngFor="let vid of videoTestimonials; let i = index"
+            [class.active]="activeIndex === i"
+            (click)="scrollToCard(i)">
+      </span>
+    </div>
+
+
+  </div>
+</section>

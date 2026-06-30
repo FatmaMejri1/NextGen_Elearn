@@ -1,0 +1,121 @@
+@use './admin-users.component.scss' as *;
+
+.tab-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 28px;
+  background: rgba(17, 34, 64, 0.25);
+  padding: 8px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  width: fit-content;
+
+  button {
+    border: 1px solid transparent;
+    background: transparent;
+    color: var(--text-muted);
+    border-radius: 999px;
+    padding: 8px 18px;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+
+    &.active {
+      color: #fff;
+      border-color: rgba(16, 185, 129, 0.35);
+      background: rgba(16, 185, 129, 0.15);
+      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.1);
+    }
+
+    &:hover:not(.active) {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.05);
+    }
+  }
+}
+
+.installment-box {
+  border: 1px dashed var(--border-hover);
+  background: rgba(6, 13, 31, 0.25);
+  border-radius: 14px;
+  padding: 20px;
+  display: grid;
+  gap: 14px;
+  transition: border-color 0.2s ease;
+
+  &:hover {
+    border-color: var(--cta-green);
+  }
+}
+
+.feature-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 12px;
+  margin-bottom: 12px;
+  align-items: center;
+}
+
+.link-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr auto;
+  gap: 12px;
+  margin-bottom: 12px;
+  align-items: center;
+}
+
+.link-row-readonly {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 12px;
+  align-items: center;
+}
+
+.list {
+  display: grid;
+  gap: 14px;
+}
+
+.list-item {
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 18px 20px;
+  background: rgba(17, 34, 64, 0.35);
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  align-items: flex-start;
+  transition: all 0.25s ease;
+
+  p {
+    color: var(--text-muted);
+    font-size: 13.5px;
+    margin-top: 8px;
+    line-height: 1.5;
+  }
+
+  &:hover {
+    background: rgba(17, 34, 64, 0.55);
+    border-color: var(--border-hover);
+    transform: translateY(-1px);
+  }
+}
+
+@media (max-width: 760px) {
+  .tab-nav {
+    border-radius: 16px;
+    width: 100%;
+    button {
+      flex: 1 1 auto;
+      text-align: center;
+    }
+  }
+  .list-item {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 14px;
+  }
+}

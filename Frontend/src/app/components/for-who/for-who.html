@@ -1,0 +1,29 @@
+<section class="for-who" id="about">
+  <div class="container">
+    <div class="two-col">
+      <div class="left-col">
+        <div class="section-img-stack">
+          <div class="img-placeholder main-img">
+            <img [src]="imageUrl" alt="Agence Digital Services - Formation" />
+          </div>
+        </div>
+      </div>
+      <div class="right-col">
+        <h2>{{ title }}</h2>
+        <p class="sub-en">{{ subtitle }}</p>
+        <div class="for-who-list">
+          <div class="fwl-item" *ngFor="let item of forWhoItems">
+            <div class="fwl-icon">
+              <span [innerHTML]="item.icon"></span>
+            </div>
+            <div>
+              <div class="fwl-title">{{ item.title }}</div>
+              <div class="fwl-sub">{{ item.subtitle }}</div>
+            </div>
+          </div>
+        </div>
+        <a [href]="ctaLink" class="btn-outline-cyan">{{ ctaText }}</a>
+      </div>
+    </div>
+  </div>
+</section>

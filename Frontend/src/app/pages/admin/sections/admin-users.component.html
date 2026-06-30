@@ -1,0 +1,67 @@
+<div class="section-head">
+  <div>
+    <p>دير حسابات الطلبة، الدفعات، وصلاحيات الدروس.</p>
+  </div>
+  <button class="btn-primary" type="button" (click)="startUser()">زيد مستخدم</button>
+</div>
+
+<div class="edit-card" *ngIf="editingUser">
+  <h3>{{ editingUser.fullName ? 'بدّل المستخدم' : 'مستخدم جديد' }}</h3>
+  <div class="form-grid">
+    <label>الاسم الكامل <input [(ngModel)]="editingUser.fullName" /></label>
+    <label>الإيميل <input type="email" [(ngModel)]="editingUser.email" /></label>
+    <label>التليفون <input [(ngModel)]="editingUser.phone" placeholder="اختياري" /></label>
+    <label class="checkbox-row">
+      <input type="checkbox" [(ngModel)]="editingUser.isActive" />
+      حساب نشط
+    </label>
+  </div>
+  <div class="inline-actions">
+    <button class="btn-cta" type="button" (click)="saveUser()">احفظ المستخدم</button>
+    <button class="btn-primary" type="button" (click)="editingUser = null">إلغاء</button>
+  </div>
+</div>
+
+<div class="layout-grid">
+  <section class="panel">
+    <h3>كل المستخدمين</h3>
+    <div class="user-list">
+      <button type="button" class="user-row" *ngFor="let user of users" [class.active]="user.id === selectedUserId" (click)="selectedUserId = user.id">
+        <strong>{{ user.fullName }}</strong>
+        <span>{{ user.email }}</span>
+        <span class="status-pill" [class.inactive]="!user.isActive">{{ user.isActive ? 'نشط' : 'موقوف' }}</span>
+      </button>
+    </div>
+    <div class="inline-actions" *ngIf="selectedUser">
+      <button class="btn-primary" type="button" (click)="startUser(selectedUser!)">بدّل التفاصيل</button>
+      <button class="btn-danger" type="button" (click)="deleteUser(selectedUser!.id)">احذف</button>
+    </div>
+  </section>
+
+  <section class="panel" *ngIf="selectedUser as user">
+    <div class="panel-top">
+      <h3>{{ user.fullName }} — التحكم في الحزم</h3>
+      <button class="btn-cta" type="button" (click)="saveSelectedUserAccess()">احفظ الصلاحيات</button>
+    </div>
+    <p class="hint">نموذج 5 حزم: كل حزمة 100 دينار وتتفتح بعد الدفع. تحكم شنوّا يصلح يشوف المستخدم.</p>
+    <div class="pack-access-list">
+      <article class="pack-access-card" *ngFor="let pack of packs">
+        <div>
+          <strong>حزمة {{ pack.packNumber }} — {{ pack.title }}</strong>
+          <p>{{ pack.price }} {{ pack.currency }} · {{ pack.lessons.length }} دروس</p>
+        </div>
+        <select [ngModel]="getPackAccess(user, pack.id)?.status" (ngModelChange)="setPackStatus(user, pack.id, $event)">
+          <option *ngFor="let status of packStatuses" [value]="status">{{ statusLabel(status) }}</option>
+        </select>
+      </article>
+    </div>
+    <h4 class="sub-title">عطي دروس إضافية</h4>
+    <div class="lesson-assign" *ngFor="let pack of packs">
+      <p class="pack-label">{{ pack.title }}</p>
+      <label class="lesson-check" *ngFor="let lesson of pack.lessons">
+        <input type="checkbox" [checked]="isLessonAssigned(user, lesson.id)" (change)="toggleLessonForUser(user, lesson.id)" />
+        {{ lesson.orderIndex }}. {{ lesson.title }}
+      </label>
+    </div>
+  </section>
+</div>

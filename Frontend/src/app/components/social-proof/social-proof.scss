@@ -1,0 +1,133 @@
+.social-proof { background: transparent; }
+
+.avatars-strip {
+  overflow: hidden;
+  width: 100%;
+  margin-bottom: 48px;
+  position: relative;
+  mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+}
+
+.avatar-scroll-track {
+  display: flex;
+  width: max-content;
+  gap: 12px;
+  animation: scrollLeftAvatar 25s linear infinite;
+
+  &:hover {
+    animation-play-state: paused;
+  }
+}
+
+@keyframes scrollLeftAvatar {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(calc(-50% - 6px)); } /* -50% width minus half gap */
+}
+
+.avatar {
+  width: 52px;
+  height: 52px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 18px;
+  color: white;
+  border: 2px solid rgba(77, 217, 192, 0.15);
+  flex-shrink: 0;
+  cursor: pointer;
+  transition: transform 0.2s, border-color 0.2s;
+
+  &:hover {
+    transform: scale(1.1);
+    border-color: var(--highlight);
+  }
+}
+
+.big-stat {
+  text-align: center;
+  margin-bottom: 56px;
+  h2 {
+    font-size: clamp(28px, 4vw, 48px);
+    font-weight: 800;
+    color: var(--text-white);
+  }
+}
+
+.marquee-wrapper {
+  overflow: hidden;
+  width: 100%;
+  position: relative;
+  
+  /* Optional: Add gradient fades to the edges */
+  mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+}
+
+.marquee-track {
+  display: flex;
+  width: max-content;
+  gap: 20px;
+  animation: scrollLeft 40s linear infinite;
+  
+  /* Pause animation on hover */
+  &:hover {
+    animation-play-state: paused;
+  }
+}
+
+@keyframes scrollLeft {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(calc(-50% - 10px)); } /* -50% of the total width (half because of duplicates) minus half the gap */
+}
+
+.review-card {
+  width: 340px; /* Fixed width for horizontal scrolling */
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 24px;
+  flex-shrink: 0;
+  transition: transform 0.3s ease;
+  
+  &:hover {
+    transform: translateY(-4px);
+    border-color: var(--secondary);
+  }
+
+  .stars {
+    color: #f5c518;
+    font-size: 16px;
+    margin-bottom: 12px;
+    letter-spacing: 2px;
+  }
+
+  p {
+    font-size: 14px;
+    color: var(--text-muted);
+    line-height: 1.7;
+    margin-bottom: 20px;
+  }
+}
+
+.reviewer {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.rev-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--bg-card2);
+  border: 2px solid var(--accent-cyan);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--accent-cyan);
+}

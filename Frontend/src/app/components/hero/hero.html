@@ -1,0 +1,48 @@
+<section class="hero" id="about" *ngIf="hero">
+  <div class="hero-bg"></div>
+  <div class="container">
+    <div class="trusted-badge">
+      <span class="dot"></span>
+      {{ hero.badge }}
+    </div>
+    <h1>
+      {{ hero.titleLine1 }}<br>
+      <span class="highlight-primary">{{ hero.titleHighlight }}</span><br>
+      {{ hero.titleLine2 }}
+    </h1>
+    <p class="hero-sub">
+      مؤسسة من طرف <strong style="color: var(--cta-green);">{{ hero.founderName }}</strong> — {{ hero.subtitle }}
+    </p>
+
+    <div class="special-offer-banner">
+      🔥 عرض خاص هالشهر: <span class="offer-price">{{ hero.offerPrice }} دينار</span> برك!<br>
+      <span class="offer-next">💰 سعر الشهر الجاي: <span class="strikethrough">{{ hero.nextMonthPrice }} دينار</span></span>
+    </div>
+    <div class="hero-actions">
+      <a [href]="purchaseWhatsappHref" target="_blank" rel="noopener" class="btn-cta">اشتري الفورماسيون</a>
+      <a href="#programme" class="btn-primary">شوف البرنامج</a>
+    </div>
+    <div class="hero-video">
+      <div class="video-wrapper">
+        <div class="video-header">
+          <div class="channel-info">
+            <div class="channel-avatar">{{ hero.channelName.charAt(0) }}</div>
+            <div>
+              <div class="channel-name">{{ hero.channelName }}</div>
+              <div class="channel-author">{{ hero.channelAuthor }}</div>
+            </div>
+          </div>
+        </div>
+        <div class="video-thumb" *ngIf="!hasVideo">
+          <div class="play-btn">
+            <svg viewBox="0 0 24 24" fill="white" width="40" height="40">
+              <path d="M8 5v14l11-7z"/>
+            </svg>
+          </div>
+          <div class="video-label">{{ hero.videoLabel }}</div>
+        </div>
+        <iframe *ngIf="hasVideo && embedUrl" [src]="embedUrl" class="video-embed" title="فيديو الهيرو" allowfullscreen></iframe>
+      </div>
+    </div>
+  </div>
+</section>

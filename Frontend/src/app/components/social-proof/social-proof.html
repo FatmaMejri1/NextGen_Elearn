@@ -1,0 +1,41 @@
+<section class="social-proof" id="social-proof">
+  <div class="container">
+    <div class="avatars-strip" *ngIf="reviewAvatars.length">
+      <div class="avatar-scroll-track">
+        <div class="avatar" *ngFor="let a of reviewAvatars" [style.background]="a.color" (click)="scrollToReviews()">
+          {{ a.letter }}
+        </div>
+        <div class="avatar" *ngFor="let a of reviewAvatars" [style.background]="a.color" (click)="scrollToReviews()">
+          {{ a.letter }}
+        </div>
+      </div>
+    </div>
+
+    <div class="big-stat" id="reviews-section">
+      <h2>{{ statLabel }}</h2>
+    </div>
+
+    <div class="marquee-wrapper">
+      <div class="marquee-track">
+        <!-- Original Cards -->
+        <div class="review-card" *ngFor="let r of reviews">
+          <div class="stars">★★★★★</div>
+          <p>"{{ r.text }}"</p>
+          <div class="reviewer">
+            <div class="rev-avatar">{{ r.name[0] }}</div>
+            <span>{{ r.name }}</span>
+          </div>
+        </div>
+        <!-- Duplicated Cards for infinite scroll -->
+        <div class="review-card" *ngFor="let r of reviews">
+          <div class="stars">★★★★★</div>
+          <p>"{{ r.text }}"</p>
+          <div class="reviewer">
+            <div class="rev-avatar">{{ r.name[0] }}</div>
+            <span>{{ r.name }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

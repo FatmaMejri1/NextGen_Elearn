@@ -1,0 +1,24 @@
+{
+  "name": "backend",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "admin:create": "node scripts/create-admin.mjs",
+    "db:site-content": "node scripts/setup-site-content.mjs"
+  },
+  "dependencies": {
+    "@supabase/ssr": "^0.12.0",
+    "@supabase/supabase-js": "^2.108.2",
+    "jose": "^6.2.3",
+    "next": "16.2.9",
+    "resend": "^6.14.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "typescript": "^5"
+  }
+}

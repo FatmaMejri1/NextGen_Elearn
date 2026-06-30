@@ -1,0 +1,267 @@
+.purchase-page {
+  min-height: 100vh;
+  background: var(--bg-main);
+  padding: 40px 0 80px;
+}
+
+.purchase-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 60px;
+
+  .back-link {
+    color: var(--text-muted);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s;
+    &:hover { color: var(--primary); }
+  }
+
+  .logo-img { height: 36px; }
+}
+
+.purchase-content {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  gap: 60px;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+h2 {
+  font-size: 24px;
+  margin-bottom: 8px;
+}
+
+.sub {
+  color: var(--text-muted);
+  margin-bottom: 32px;
+  font-size: 13px;
+}
+
+.form-group {
+  margin-bottom: 24px;
+  
+  label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-main);
+    margin-bottom: 8px;
+  }
+  
+  input {
+    width: 100%;
+    padding: 14px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    font-family: inherit;
+    font-size: 14px;
+    background: var(--bg-card);
+    color: var(--text-main);
+    transition: all 0.2s;
+    
+    &:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(46, 117, 182, 0.2);
+    }
+  }
+}
+
+.payment-options {
+  margin-top: 48px;
+
+  h3 {
+    font-size: 16px;
+    margin-bottom: 8px;
+  }
+}
+
+.payment-sub {
+  color: var(--text-muted);
+  font-size: 13px;
+  margin-bottom: 20px;
+}
+
+.whatsapp-actions {
+  display: grid;
+  gap: 14px;
+}
+
+.whatsapp-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 18px 20px;
+  border-radius: 14px;
+  border: 1px solid rgba(37, 211, 102, 0.35);
+  background: rgba(37, 211, 102, 0.08);
+  text-decoration: none;
+  color: var(--text-main);
+  transition: transform 0.2s, border-color 0.2s, background 0.2s;
+
+  &:hover {
+    transform: translateY(-2px);
+    border-color: var(--whatsapp);
+    background: rgba(37, 211, 102, 0.14);
+  }
+
+  &--purchase {
+    border-color: rgba(46, 117, 182, 0.4);
+    background: rgba(46, 117, 182, 0.1);
+
+    .wa-icon {
+      background: var(--secondary);
+    }
+
+    &:hover {
+      border-color: var(--secondary);
+      background: rgba(46, 117, 182, 0.16);
+    }
+  }
+}
+
+.wa-icon {
+  flex-shrink: 0;
+  width: 52px;
+  height: 52px;
+  border-radius: 12px;
+  background: var(--whatsapp);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.wa-text {
+  display: grid;
+  gap: 6px;
+
+  strong {
+    font-size: 15px;
+    color: #fff;
+  }
+
+  span {
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.5;
+  }
+}
+
+.form-message {
+  border-radius: 8px;
+  padding: 12px;
+  margin: 10px 0 18px;
+  font-size: 13px;
+  font-weight: 600;
+
+  &.error {
+    background: rgba(239, 68, 68, 0.12);
+    color: #fecaca;
+  }
+
+  &.success {
+    background: rgba(16, 185, 129, 0.12);
+    color: #bbf7d0;
+  }
+}
+
+.btn-full {
+  width: 100%;
+  margin-bottom: 16px;
+  justify-content: center;
+}
+
+.summary-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 32px;
+  box-shadow: var(--shadow-sm);
+  position: sticky;
+  top: 40px;
+
+  h3 {
+    font-size: 17px;
+    margin-bottom: 24px;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 16px;
+  }
+}
+
+.course-info {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 32px;
+  
+  .course-thumb {
+    width: 80px;
+    height: 60px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+  }
+
+  h4 { font-size: 16px; margin-bottom: 4px; }
+  p { font-size: 13px; color: var(--text-muted); }
+}
+
+.summary-line {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  color: var(--text-muted);
+  margin-bottom: 16px;
+
+  &.discount {
+    color: var(--cta-green);
+  }
+}
+
+.summary-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid var(--border);
+  padding-top: 24px;
+  margin-top: 24px;
+  font-weight: 700;
+  font-size: 16px;
+  color: var(--text-main);
+
+  .total-price {
+    font-size: 24px;
+    color: var(--cta-green);
+  }
+}
+
+.secure-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 24px;
+  font-size: 13px;
+  color: var(--text-dim);
+  font-weight: 500;
+}
+
+@media (max-width: 768px) {
+  .purchase-content {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+  
+  .summary-card {
+    position: static;
+    margin-bottom: 40px;
+  }
+
+  .purchase-header {
+    flex-direction: column-reverse;
+    gap: 20px;
+    align-items: flex-start;
+  }
+}

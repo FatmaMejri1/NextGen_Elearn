@@ -1,0 +1,69 @@
+<div class="section-head">
+  <div>
+    <p>إدارة الدورات والدروس (فيديوهات Bunny.net) مربوطة بالباك إند.</p>
+  </div>
+  <button class="btn-primary" type="button" (click)="refresh.emit()">تحديث</button>
+</div>
+
+<div class="layout-grid">
+  <section class="panel">
+    <h3>إنشاء دورة</h3>
+    <form class="form-grid" (ngSubmit)="createCourse()">
+      <label class="full">العنوان <input [(ngModel)]="newCourse.title" name="courseTitle" required /></label>
+      <label class="full">الوصف <textarea rows="3" [(ngModel)]="newCourse.description" name="courseDesc" placeholder="اختياري"></textarea></label>
+      <label class="checkbox-row full">
+        <input type="checkbox" [(ngModel)]="newCourse.is_published" name="coursePub" />
+        انشر الدورة
+      </label>
+      <button class="btn-cta" type="submit" [disabled]="savingCourse">{{ savingCourse ? 'قاعد نحفظ...' : 'إنشاء دورة' }}</button>
+    </form>
+  </section>
+
+  <section class="panel">
+    <h3>زيد درس</h3>
+    <form class="form-grid" (ngSubmit)="createLesson()">
+      <label class="full">
+        الدورة
+        <select [(ngModel)]="newLesson.course_id" name="lessonCourse" (ngModelChange)="selectCourse($event)" required>
+          <option value="">اختار دورة</option>
+          <option *ngFor="let course of courses" [value]="course.id">{{ course.title }}</option>
+        </select>
+      </label>
+      <label>عنوان الدرس <input [(ngModel)]="newLesson.title" name="lessonTitle" required /></label>
+      <label>الترتيب <input type="number" [(ngModel)]="newLesson.order_index" name="lessonOrder" placeholder="اختياري" /></label>
+      <label class="full">معرّف فيديو Bunny <input [(ngModel)]="newLesson.bunny_video_id" name="lessonVideo" placeholder="اختياري" /></label>
+      <button class="btn-cta" type="submit" [disabled]="savingLesson || !courses.length">
+        {{ savingLesson ? 'قاعد نحفظ...' : 'زيد درس' }}
+      </button>
+    </form>
+  </section>
+</div>
+
+<section class="panel list-panel">
+  <h3>كل الدورات</h3>
+  <p class="empty" *ngIf="loading">قاعد نحمّل الدورات...</p>
+  <p class="empty" *ngIf="!loading && !courses.length">ما فماش دورات توا.</p>
+
+  <article class="course-card" *ngFor="let course of courses" [class.active]="course.id === selectedCourseId">
+    <button class="course-main" type="button" (click)="selectCourse(course.id)">
+      <strong>{{ course.title }}</strong>
+      <span>{{ course.description || 'ما فماش وصف.' }}</span>
+    </button>
+    <div class="inline-actions">
+      <button class="btn-primary" type="button" (click)="togglePublished(course)">
+        {{ course.is_published ? 'إلغاء النشر' : 'انشر' }}
+      </button>
+      <button class="btn-danger" type="button" (click)="deleteCourse(course)">احذف</button>
+    </div>
+    <div class="lessons" *ngIf="course.id === selectedCourseId">
+      <h4>الدروس</h4>
+      <div class="lesson-row" *ngFor="let lesson of course.lessons">
+        <div>
+          <strong>{{ lesson.order_index }}. {{ lesson.title }}</strong>
+          <p>{{ lesson.bunny_video_id || 'ما فماش معرّف Bunny' }}</p>
+        </div>
+        <button class="btn-danger" type="button" (click)="deleteLesson(lesson.id)">احذف</button>
+      </div>
+    </div>
+  </article>
+</section>

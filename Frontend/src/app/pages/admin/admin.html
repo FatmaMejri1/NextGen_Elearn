@@ -1,0 +1,146 @@
+<div class="admin-shell" [class.sidebar-open]="sidebarOpen">
+  <ng-container *ngIf="!loggedIn">
+    <div class="login-screen">
+      <div class="login-card panel">
+        <a routerLink="/" class="back-link">← رجع للموقع</a>
+        <p class="eyebrow">لوحة الإدارة</p>
+        <h1>سجّل الدخول باش تدير المنصة</h1>
+        <p class="status">{{ apiStatus }}</p>
+
+        <form class="login-form" (ngSubmit)="login()">
+          <label>
+            الإيميل
+            <input type="email" [(ngModel)]="loginForm.email" name="adminEmail" placeholder="admin@email.com" autocomplete="email" required />
+          </label>
+          <label>
+            كلمة السر
+            <input type="password" [(ngModel)]="loginForm.password" name="adminPassword" placeholder="كلمة السر" autocomplete="current-password" required />
+          </label>
+          <p class="flash error" *ngIf="error">{{ error }}</p>
+          <p class="flash success" *ngIf="success">{{ success }}</p>
+          <button class="btn-cta" type="submit" [disabled]="loggingIn">
+            {{ loggingIn ? 'قاعد نخدم...' : 'دخول' }}
+          </button>
+        </form>
+      </div>
+    </div>
+  </ng-container>
+
+  <ng-container *ngIf="loggedIn">
+    <div class="sidebar-backdrop" (click)="sidebarOpen = false"></div>
+
+    <aside class="sidebar">
+      <div class="brand">
+        <span class="brand-mark">NG</span>
+        <div>
+          <strong>Next Generation</strong>
+          <span>لوحة التحكم</span>
+        </div>
+      </div>
+
+      <nav class="side-nav">
+        <button
+          type="button"
+          *ngFor="let item of navItems"
+          [class.active]="activeSection === item.id"
+          [class.blocked]="item.blocked"
+          (click)="selectSection(item)"
+        >
+          <span class="icon">{{ item.icon }}</span>
+          <span class="label-text">{{ item.label }}</span>
+          <span class="lock-badge" *ngIf="item.blocked">🔒</span>
+        </button>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="admin-chip">
+          <span class="avatar">{{ adminName.charAt(0) }}</span>
+          <div>
+            <strong>{{ adminName }}</strong>
+            <span>{{ apiStatus }}</span>
+          </div>
+        </div>
+        <a routerLink="/" class="ghost-link">شوف الموقع</a>
+        <button class="logout-btn" type="button" (click)="logout()">خروج</button>
+      </div>
+    </aside>
+
+    <div class="main-area">
+      <header class="topbar">
+        <button class="menu-btn" type="button" (click)="toggleSidebar()">☰</button>
+        <div>
+          <p class="eyebrow">لوحة التحكم</p>
+          <h1>{{ activeSectionLabel }}</h1>
+        </div>
+      </header>
+
+      <div class="flash-bar" *ngIf="error || success">
+        <p class="flash error" *ngIf="error">{{ error }}</p>
+        <p class="flash success" *ngIf="success">{{ success }}</p>
+      </div>
+
+      <main class="content">
+        <app-admin-overview *ngIf="activeSection === 'overview'"></app-admin-overview>
+        <app-admin-landing *ngIf="activeSection === 'landing'" (notify)="handleNotify($event)"></app-admin-landing>
+        <app-admin-users *ngIf="activeSection === 'users'" (notify)="handleNotify($event)"></app-admin-users>
+        <app-admin-packs *ngIf="activeSection === 'packs'" (notify)="handleNotify($event)"></app-admin-packs>
+        <app-admin-courses
+          *ngIf="activeSection === 'courses'"
+          [courses]="courses"
+          [loading]="loading"
+          (notify)="handleNotify($event)"
+          (refresh)="loadCourses()"
+        ></app-admin-courses>
+        <app-admin-settings *ngIf="activeSection === 'settings'" (notify)="handleNotify($event)"></app-admin-settings>
+      </main>
+    </div>
+  </ng-container>
+
+  <!-- Premium Custom Modal Overlay -->
+  <div class="custom-modal-overlay" *ngIf="activeModal()" (click)="closeModal(false)">
+    <div class="custom-modal-card" (click)="$event.stopPropagation()">
+      <div class="modal-icon" [ngClass]="activeModal()?.type">
+        <!-- Success Icon -->
+        <svg *ngIf="activeModal()?.type === 'success'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="20 6 9 17 4 12"></polyline>
+        </svg>
+        <!-- Error Icon -->
+        <svg *ngIf="activeModal()?.type === 'error'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="15" y1="9" x2="9" y2="15"></line>
+          <line x1="9" y1="9" x2="15" y2="15"></line>
+        </svg>
+        <!-- Confirm Icon -->
+        <svg *ngIf="activeModal()?.type === 'confirm'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"></circle>
+          <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+          <line x1="12" y1="17" x2="12.01" y2="17"></line>
+        </svg>
+      </div>
+
+      <div class="modal-header">
+        <h2>{{ activeModal()?.title }}</h2>
+      </div>
+
+      <div class="modal-body">
+        <p>{{ activeModal()?.message }}</p>
+      </div>
+
+      <div class="modal-actions">
+        <ng-container *ngIf="activeModal()?.type === 'confirm'; else alertActions">
+          <button type="button" class="btn-modal btn-cancel" (click)="closeModal(false)">
+            {{ activeModal()?.cancelText || 'إلغاء' }}
+          </button>
+          <button type="button" class="btn-modal btn-confirm" (click)="closeModal(true)">
+            {{ activeModal()?.confirmText || 'موافق' }}
+          </button>
+        </ng-container>
+        <ng-template #alertActions>
+          <button type="button" class="btn-modal btn-close" (click)="closeModal(true)">
+            موافق
+          </button>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+</div>

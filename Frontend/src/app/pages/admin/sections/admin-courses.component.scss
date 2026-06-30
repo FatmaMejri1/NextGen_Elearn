@@ -1,0 +1,42 @@
+@use './admin-users.component.scss' as *;
+
+.list-panel { margin-top: 16px; }
+
+.course-card {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px;
+  margin-top: 12px;
+  background: var(--bg-card2);
+
+  &.active { border-color: var(--cta-green); }
+}
+
+.course-main {
+  width: 100%;
+  text-align: left;
+  background: transparent;
+  border: 0;
+  color: inherit;
+  cursor: pointer;
+  display: grid;
+  gap: 6px;
+
+  span { color: var(--text-muted); font-size: 14px; }
+}
+
+.lessons {
+  border-top: 1px solid var(--border);
+  margin-top: 14px;
+  padding-top: 14px;
+}
+
+textarea, select {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg-main);
+  color: var(--text-main);
+  padding: 10px 12px;
+  font: inherit;
+  width: 100%;
+}

@@ -1,0 +1,126 @@
+<div class="section-head">
+  <div>
+    <p>بدّل بروفيل الأدمن، واتساب الشراء، وأمان الحساب.</p>
+  </div>
+</div>
+
+<!-- Top Row: Profile + Password -->
+<div class="settings-row">
+
+  <!-- Profile Card -->
+  <section class="settings-card">
+    <div class="card-header">
+      <div class="card-icon profile-icon">👤</div>
+      <div>
+        <h3>البروفيل</h3>
+        <p class="card-sub">معلومات حساب الأدمن</p>
+      </div>
+    </div>
+    <form class="settings-form" (ngSubmit)="saveProfile()" *ngIf="settings">
+      <label>
+        <span>الاسم الكامل</span>
+        <input [(ngModel)]="settings.fullName" name="settingsName" placeholder="اسمك" />
+      </label>
+      <label>
+        <span>الإيميل</span>
+        <input type="email" [(ngModel)]="settings.email" name="settingsEmail" placeholder="admin@example.com" />
+      </label>
+      <button class="btn-cta" type="submit">احفظ البروفيل</button>
+    </form>
+  </section>
+
+  <!-- Password Card -->
+  <section class="settings-card">
+    <div class="card-header">
+      <div class="card-icon lock-icon">🔐</div>
+      <div>
+        <h3>كلمة السر</h3>
+        <p class="card-sub">بدّل كلمة السر الخاصة بك</p>
+      </div>
+    </div>
+    <form class="settings-form" (ngSubmit)="changePassword()">
+      <label>
+        <span>كلمة السر الحالية</span>
+        <input type="password" [(ngModel)]="currentPassword" name="currentPassword" placeholder="••••••••" />
+      </label>
+      <label>
+        <span>كلمة السر الجديدة</span>
+        <input type="password" [(ngModel)]="newPassword" name="newPassword" placeholder="••••••••" />
+      </label>
+      <label>
+        <span>أكّد كلمة السر</span>
+        <input type="password" [(ngModel)]="confirmPassword" name="confirmPassword" placeholder="••••••••" />
+      </label>
+      <button class="btn-cta" type="submit">حدّث كلمة السر</button>
+    </form>
+
+  </section>
+
+</div>
+
+<!-- WhatsApp Card -->
+<section class="settings-card wide-card" *ngIf="whatsappContact">
+  <div class="card-header">
+    <div class="card-icon wa-icon">💬</div>
+    <div>
+      <h3>واتساب — الشراء والاستفسار</h3>
+      <p class="card-sub">هالإعدادات تستعمل في صفحة الشراء وأزرار «اشتري الفورماسيون»</p>
+    </div>
+  </div>
+
+  <form class="settings-form" (ngSubmit)="saveWhatsApp()">
+    <label class="phone-label">
+      <span>رقم واتساب</span>
+      <div class="phone-input-wrap">
+        <span class="phone-prefix">+</span>
+        <input [(ngModel)]="whatsappContact.phoneNumber" name="waPhone" placeholder="21600000000" />
+      </div>
+    </label>
+
+    <div class="wa-blocks-row">
+      <!-- Explanation Button -->
+      <div class="wa-block">
+        <div class="wa-block-header">
+          <span class="wa-badge inquiry">استفسار</span>
+          <p class="wa-block-desc">للكليونات اللي يحبوا يفهموا أكثر</p>
+        </div>
+        <label>
+          <span>العنوان</span>
+          <input [(ngModel)]="whatsappContact.explanation.title" name="waExplainTitle" />
+        </label>
+        <label>
+          <span>الوصف</span>
+          <input [(ngModel)]="whatsappContact.explanation.description" name="waExplainDesc" />
+        </label>
+        <label>
+          <span>رسالة واتساب</span>
+          <textarea rows="3" [(ngModel)]="whatsappContact.explanation.message" name="waExplainMsg"></textarea>
+        </label>
+      </div>
+
+      <!-- Purchase Button -->
+      <div class="wa-block">
+        <div class="wa-block-header">
+          <span class="wa-badge purchase">شراء</span>
+          <p class="wa-block-desc">للكليونات الجاهزين للشراء</p>
+        </div>
+        <label>
+          <span>العنوان</span>
+          <input [(ngModel)]="whatsappContact.purchase.title" name="waPurchaseTitle" />
+        </label>
+        <label>
+          <span>الوصف</span>
+          <input [(ngModel)]="whatsappContact.purchase.description" name="waPurchaseDesc" />
+        </label>
+        <label>
+          <span>رسالة واتساب</span>
+          <textarea rows="3" [(ngModel)]="whatsappContact.purchase.message" name="waPurchaseMsg"></textarea>
+        </label>
+      </div>
+    </div>
+
+    <button class="btn-cta wa-save-btn" type="submit">احفظ إعدادات واتساب</button>
+  </form>
+</section>
+
+

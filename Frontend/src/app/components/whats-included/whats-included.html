@@ -1,0 +1,23 @@
+<section class="whats-included" id="included" *ngIf="content">
+  <div class="container">
+    <header class="section-header">
+      <span class="section-badge">الباقة الكاملة</span>
+      <h2>{{ content.title }}</h2>
+      <p class="section-sub">{{ content.subtitle }}</p>
+    </header>
+
+    <div class="included-grid">
+      <article class="included-card" *ngFor="let item of content.items">
+        <div class="card-icon" aria-hidden="true">{{ item.icon }}</div>
+        <h3 class="card-title">{{ item.titleAr }}</h3>
+        <p class="card-desc">{{ item.titleEn }}</p>
+      </article>
+    </div>
+
+    <div class="cta-wrap" *ngIf="content.ctaText">
+      <a [href]="content.ctaLink" target="_blank" rel="noopener" class="btn-cta">
+        {{ content.ctaText }}
+      </a>
+    </div>
+  </div>
+</section>

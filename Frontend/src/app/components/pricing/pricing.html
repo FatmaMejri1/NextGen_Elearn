@@ -1,0 +1,43 @@
+<section class="pricing" id="pricing" *ngIf="pricing">
+  <div class="container">
+    <h2>{{ pricing.title }}</h2>
+    <p class="sub">{{ pricing.subtitle }}</p>
+
+    <div class="pricing-card">
+      <div class="card-badge">
+        <span>⚡</span> {{ pricing.badge }} <span>⚡</span>
+      </div>
+      <div class="card-body">
+        <div class="old-price">
+          <span class="strikethrough">{{ pricing.oldPrice }} {{ pricing.currency }}</span>
+          <span class="discount-badge">-{{ pricing.discountPercent }}%</span>
+        </div>
+        <div class="main-price">
+          <span class="amount">{{ pricing.currentPrice }}</span>
+          <span class="currency">{{ pricing.currency }}</span>
+        </div>
+        <p class="price-note">{{ pricing.note }}</p>
+
+        <p class="installment-note" *ngIf="pricing.installmentEnabled">
+          ولا ادفع على {{ pricing.installmentCount }} دفعات، كل دفعة {{ pricing.installmentAmount }} دينار
+        </p>
+
+        <div class="features-list">
+          <div class="feature-item" *ngFor="let feature of pricing.features">
+            <svg class="feat-check" viewBox="0 0 24 24" fill="none">
+              <circle cx="12" cy="12" r="10" stroke="var(--cta-green)" stroke-width="1.5"/>
+              <path d="M8 12l3 3 5-5" stroke="var(--cta-green)" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            {{ feature }}
+          </div>
+        </div>
+
+        <a [href]="purchaseWhatsappHref" target="_blank" rel="noopener" class="btn-cta main-cta">
+          اشتري الفورماسيون
+        </a>
+        <p class="urgency">⏳ {{ pricing.urgency }}</p>
+      </div>
+    </div>
+  </div>
+</section>

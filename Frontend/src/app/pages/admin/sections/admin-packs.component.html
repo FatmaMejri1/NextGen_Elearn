@@ -1,0 +1,70 @@
+<div class="section-head">
+  <div>
+    <p>نموذج 5 حزم — كل حزمة 100 دينار، تتدفع على أقساط.</p>
+  </div>
+  <button class="btn-primary" type="button" (click)="startPack()">زيد حزمة</button>
+</div>
+
+<div class="edit-card" *ngIf="editingPack">
+  <h3>{{ editingPack.title ? 'بدّل الحزمة' : 'حزمة جديدة' }}</h3>
+  <div class="form-grid">
+    <label>رقم الحزمة <input type="number" [(ngModel)]="editingPack.packNumber" placeholder="اختياري" /></label>
+    <label>السعر <input type="number" [(ngModel)]="editingPack.price" placeholder="اختياري" /></label>
+    <label>العنوان <input [(ngModel)]="editingPack.title" /></label>
+    <label>العملة <input [(ngModel)]="editingPack.currency" placeholder="اختياري" /></label>
+    <label class="full">الوصف <textarea rows="3" [(ngModel)]="editingPack.description" placeholder="اختياري"></textarea></label>
+  </div>
+  <div class="inline-actions">
+    <button class="btn-cta" type="button" (click)="savePack()">احفظ الحزمة</button>
+    <button class="btn-primary" type="button" (click)="editingPack = null">إلغاء</button>
+  </div>
+</div>
+
+<div class="layout-grid">
+  <section class="panel">
+    <h3>الحزم</h3>
+    <div class="pack-list">
+      <button type="button" class="pack-row" *ngFor="let pack of packs" [class.active]="pack.id === selectedPackId" (click)="selectedPackId = pack.id">
+        <strong>حزمة {{ pack.packNumber }}</strong>
+        <span>{{ pack.title }}</span>
+        <span>{{ pack.price }} {{ pack.currency }}</span>
+      </button>
+    </div>
+    <div class="inline-actions" *ngIf="selectedPack">
+      <button class="btn-primary" type="button" (click)="startPack(selectedPack!)">بدّل الحزمة</button>
+      <button class="btn-danger" type="button" (click)="deletePack(selectedPack!.id)">احذف</button>
+    </div>
+  </section>
+
+  <section class="panel" *ngIf="selectedPack as pack">
+    <div class="panel-top">
+      <h3>دروس {{ pack.title }}</h3>
+      <button class="btn-primary" type="button" (click)="startLesson(pack.id)">زيد درس</button>
+    </div>
+    <div class="edit-card" *ngIf="editingLesson && editingLesson.packId === pack.id">
+      <h4>{{ editingLesson.lesson.title ? 'بدّل الدرس' : 'درس جديد' }}</h4>
+      <div class="form-grid">
+        <label>العنوان <input [(ngModel)]="editingLesson.lesson.title" /></label>
+        <label>الترتيب <input type="number" [(ngModel)]="editingLesson.lesson.orderIndex" placeholder="اختياري" /></label>
+        <label class="full">معرّف فيديو Bunny <input [(ngModel)]="editingLesson.lesson.bunnyVideoId" placeholder="اختياري" /></label>
+      </div>
+      <div class="inline-actions">
+        <button class="btn-cta" type="button" (click)="saveLesson()">احفظ الدرس</button>
+        <button class="btn-primary" type="button" (click)="editingLesson = null">إلغاء</button>
+      </div>
+    </div>
+    <div class="lesson-list">
+      <article class="lesson-row" *ngFor="let lesson of pack.lessons">
+        <div>
+          <strong>{{ lesson.orderIndex }}. {{ lesson.title }}</strong>
+          <p>{{ lesson.bunnyVideoId || 'ما فماش معرّف فيديو' }}</p>
+        </div>
+        <div class="inline-actions">
+          <button class="btn-primary" type="button" (click)="startLesson(pack.id, lesson)">بدّل</button>
+          <button class="btn-danger" type="button" (click)="deleteLesson(pack.id, lesson.id)">احذف</button>
+        </div>
+      </article>
+      <p class="empty" *ngIf="!pack.lessons.length">ما فماش دروس في هالحزمة.</p>
+    </div>
+  </section>
+</div>

@@ -1,0 +1,314 @@
+<div class="section-head">
+  <div>
+    <p>بدّل كل شي يشوفو الزوار في الصفحة الرئيسية.</p>
+  </div>
+</div>
+
+<nav class="tab-nav">
+  <button type="button" *ngFor="let tab of tabs" [class.active]="activeTab === tab.id" (click)="activeTab = tab.id">
+    {{ tab.label }}
+  </button>
+</nav>
+
+<section class="panel" *ngIf="activeTab === 'hero' && hero">
+  <form class="form-grid" (ngSubmit)="saveHero()">
+    <label>الشارة <input [(ngModel)]="hero.badge" name="heroBadge" /></label>
+    <label>العنوان — سطر 1 <input [(ngModel)]="hero.titleLine1" name="heroTitle1" /></label>
+    <label>العنوان المميز <input [(ngModel)]="hero.titleHighlight" name="heroHighlight" /></label>
+    <label>العنوان — سطر 2 <input [(ngModel)]="hero.titleLine2" name="heroTitle2" /></label>
+    <label class="full">الوصف <textarea rows="3" [(ngModel)]="hero.subtitle" name="heroSubtitle"></textarea></label>
+    <label>اسم المؤسس <input [(ngModel)]="hero.founderName" name="heroFounder" /></label>
+    <label>سعر العرض (دينار) <input type="number" [(ngModel)]="hero.offerPrice" name="heroOffer" /></label>
+    <label>سعر الشهر الجاي (دينار) <input type="number" [(ngModel)]="hero.nextMonthPrice" name="heroNext" /></label>
+    <label class="full">رابط الفيديو (يوتيوب أو Bunny) <input [(ngModel)]="hero.videoUrl" name="heroVideoUrl" placeholder="اختياري" /></label>
+    <label>تسمية الفيديو <input [(ngModel)]="hero.videoLabel" name="heroVideoLabel" placeholder="اختياري" /></label>
+    <label>اسم القناة <input [(ngModel)]="hero.channelName" name="heroChannel" placeholder="اختياري" /></label>
+    <label>صاحب القناة <input [(ngModel)]="hero.channelAuthor" name="heroAuthor" placeholder="اختياري" /></label>
+    <div class="form-actions full"><button class="btn-cta" type="submit">احفظ الهيرو</button></div>
+  </form>
+</section>
+
+<section class="panel" *ngIf="activeTab === 'navbar' && navbar">
+  <form class="form-grid" (ngSubmit)="saveNavbar()">
+    <label>رابط واتساب <input [(ngModel)]="navbar.whatsappUrl" name="navWhatsappUrl" placeholder="https://wa.me/..." /></label>
+    <label>رسالة واتساب (مشفّرة) <input [(ngModel)]="navbar.whatsappMessage" name="navWhatsappMsg" /></label>
+    <label>نص زر واتساب <input [(ngModel)]="navbar.ctaText" name="navCta" /></label>
+    <label>نص زر الدخول <input [(ngModel)]="navbar.loginText" name="navLoginText" /></label>
+    <label>رابط الدخول <input [(ngModel)]="navbar.loginLink" name="navLoginLink" placeholder="/admin" /></label>
+    <div class="full">
+      <label>روابط الأقسام</label>
+      <div class="feature-row link-row-readonly" *ngFor="let link of navbar.links; let i = index">
+        <input [(ngModel)]="navbar.links[i].label" [name]="'navLabel' + i" placeholder="العنوان" />
+        <input [(ngModel)]="navbar.links[i].href" [name]="'navHref' + i" placeholder="#section" disabled />
+      </div>
+    </div>
+    <div class="form-actions full"><button class="btn-cta" type="submit">احفظ القائمة</button></div>
+  </form>
+</section>
+
+<section class="panel" *ngIf="activeTab === 'included' && whatsIncluded">
+  <form class="form-grid" (ngSubmit)="saveWhatsIncluded()">
+    <label>عنوان القسم <input [(ngModel)]="whatsIncluded.title" name="includedTitle" /></label>
+    <label>العنوان الفرعي <input [(ngModel)]="whatsIncluded.subtitle" name="includedSubtitle" /></label>
+    <label>نص الزر <input [(ngModel)]="whatsIncluded.ctaText" name="includedCtaText" placeholder="اختياري" /></label>
+    <label>رابط الزر <input [(ngModel)]="whatsIncluded.ctaLink" name="includedCtaLink" placeholder="اختياري" /></label>
+    <div class="form-actions full"><button class="btn-cta" type="submit">احفظ العناوين</button></div>
+  </form>
+
+  <div class="panel-top" style="margin-top: 24px">
+    <h3>العناصر ({{ whatsIncluded.items.length }})</h3>
+    <button class="btn-primary" type="button" (click)="startIncludedItem()">زيد عنصر</button>
+  </div>
+  <div class="edit-card" *ngIf="editingIncludedItem">
+    <h4>{{ editingIncludedItem.titleAr ? 'بدّل العنصر' : 'عنصر جديد' }}</h4>
+    <div class="form-grid">
+      <label>الأيقونة <input [(ngModel)]="editingIncludedItem.icon" placeholder="اختياري" /></label>
+      <label class="full">العنوان بالعربي <input [(ngModel)]="editingIncludedItem.titleAr" /></label>
+      <label class="full">العنوان بالإنجليزي <input [(ngModel)]="editingIncludedItem.titleEn" placeholder="اختياري" /></label>
+    </div>
+    <div class="inline-actions">
+      <button class="btn-cta" type="button" (click)="saveIncludedItem()">احفظ</button>
+      <button class="btn-primary" type="button" (click)="editingIncludedItem = null">إلغاء</button>
+    </div>
+  </div>
+  <div class="list">
+    <article class="list-item" *ngFor="let item of whatsIncluded.items">
+      <div class="list-main">
+        <span class="list-icon">{{ item.icon }}</span>
+        <div>
+          <strong>{{ item.titleAr }}</strong>
+          <p>{{ item.titleEn }}</p>
+        </div>
+      </div>
+      <div class="inline-actions">
+        <button class="btn-primary" type="button" (click)="startIncludedItem(item)">بدّل</button>
+        <button class="btn-danger" type="button" (click)="deleteIncludedItem(item.id)">احذف</button>
+      </div>
+    </article>
+  </div>
+</section>
+
+<section class="panel" *ngIf="activeTab === 'formations' && curriculum">
+  <form class="form-grid" (ngSubmit)="saveFormationsHeader()">
+    <label>عنوان القسم <input [(ngModel)]="curriculum.title" name="curriculumTitle" /></label>
+    <label>العنوان الفرعي <input [(ngModel)]="curriculum.subtitle" name="curriculumSubtitle" /></label>
+    <label>نص زر الفورماسيون الافتراضي <input [(ngModel)]="curriculum.ctaText" name="curriculumCta" /></label>
+    <label>تسمية الموديولات <input [(ngModel)]="curriculum.modulesLabel" name="curriculumModulesLabel" /></label>
+    <div class="form-actions full"><button class="btn-cta" type="submit">احفظ العناوين</button></div>
+  </form>
+
+  <div class="panel-top" style="margin-top: 24px">
+    <h3>الفورماسيونات ({{ curriculum.formations.length }})</h3>
+    <button class="btn-primary" type="button" (click)="startFormation()">زيد فورماسيون</button>
+  </div>
+  <div class="edit-card" *ngIf="editingFormation">
+    <h4>{{ editingFormation.title ? 'بدّل الفورماسيون' : 'فورماسيون جديد' }}</h4>
+    <div class="form-grid">
+      <label>الأيقونة <input [(ngModel)]="editingFormation.icon" placeholder="اختياري" /></label>
+      <label>التصنيف <input [(ngModel)]="editingFormation.tag" /></label>
+      <label class="full">العنوان <input [(ngModel)]="editingFormation.title" /></label>
+      <label class="full">الوصف <textarea rows="3" [(ngModel)]="editingFormation.description" placeholder="اختياري"></textarea></label>
+      <label>عدد الموديولات <input type="number" [(ngModel)]="editingFormation.modules" placeholder="اختياري" /></label>
+      <label>المدة <input [(ngModel)]="editingFormation.duration" placeholder="اختياري" /></label>
+      <label class="full">المواضيع (مفصولة بفاصلة) <input [(ngModel)]="topicInput" placeholder="اختياري" /></label>
+      <label>نص الزر <input [(ngModel)]="editingFormation.ctaText" placeholder="اختياري" /></label>
+      <label>رابط الزر <input [(ngModel)]="editingFormation.ctaLink" placeholder="اختياري" /></label>
+    </div>
+    <div class="inline-actions">
+      <button class="btn-cta" type="button" (click)="saveFormation()">احفظ</button>
+      <button class="btn-primary" type="button" (click)="editingFormation = null">إلغاء</button>
+    </div>
+  </div>
+  <div class="list">
+    <article class="list-item" *ngFor="let formation of curriculum.formations">
+      <div>
+        <strong>{{ formation.icon }} {{ formation.tag }} — {{ formation.title }}</strong>
+        <p>{{ formation.description }}</p>
+        <p>📚 {{ formation.modules }} · ⏱ {{ formation.duration }} · {{ formation.topics.join(', ') }}</p>
+      </div>
+      <div class="inline-actions">
+        <button class="btn-primary" type="button" (click)="startFormation(formation)">بدّل</button>
+        <button class="btn-danger" type="button" (click)="deleteFormation(formation.id)">احذف</button>
+      </div>
+    </article>
+  </div>
+</section>
+
+<section class="panel" *ngIf="activeTab === 'languages' && curriculum">
+  <form class="form-grid" (ngSubmit)="saveLanguagesHeader()">
+    <label class="full">عنوان القسم <input [(ngModel)]="curriculum.languagesTitle" name="curriculumLangTitle" /></label>
+    <div class="form-actions full"><button class="btn-cta" type="submit">احفظ العنوان</button></div>
+  </form>
+
+  <div class="panel-top" style="margin-top: 24px">
+    <h3>اللغات ({{ curriculum.languages.length }})</h3>
+    <button class="btn-primary" type="button" (click)="startLanguage()">زيد لغة</button>
+  </div>
+  <div class="edit-card" *ngIf="editingLanguage">
+    <h4>{{ editingLanguage.name ? 'بدّل اللغة' : 'لغة جديدة' }}</h4>
+    <div class="form-grid">
+      <label>الاسم <input [(ngModel)]="editingLanguage.name" /></label>
+      <label>المستوى <input [(ngModel)]="editingLanguage.level" placeholder="اختياري" /></label>
+      <label>كود العلم (ISO) <input [(ngModel)]="editingLanguage.flagCode" placeholder="اختياري" /></label>
+    </div>
+    <div class="inline-actions">
+      <button class="btn-cta" type="button" (click)="saveLanguage()">احفظ</button>
+      <button class="btn-primary" type="button" (click)="editingLanguage = null">إلغاء</button>
+    </div>
+  </div>
+  <div class="list">
+    <article class="list-item" *ngFor="let language of curriculum.languages">
+      <div><strong>{{ language.name }}</strong><p>{{ language.level }} · {{ language.flagCode }}</p></div>
+      <div class="inline-actions">
+        <button class="btn-primary" type="button" (click)="startLanguage(language)">بدّل</button>
+        <button class="btn-danger" type="button" (click)="deleteLanguage(language.id)">احذف</button>
+      </div>
+    </article>
+  </div>
+</section>
+
+<section class="panel" *ngIf="activeTab === 'reviews'">
+  <div class="panel-top">
+    <h3>تعليقات الكليونات</h3>
+    <button class="btn-primary" type="button" (click)="startReview()">زيد تعليق</button>
+  </div>
+  <div class="edit-card" *ngIf="editingReview">
+    <h4>{{ editingReview.name ? 'بدّل التعليق' : 'تعليق جديد' }}</h4>
+    <label>الاسم <input [(ngModel)]="editingReview.name" /></label>
+    <label>التعليق <textarea rows="4" [(ngModel)]="editingReview.text"></textarea></label>
+    <div class="inline-actions">
+      <button class="btn-cta" type="button" (click)="saveReview()">احفظ</button>
+      <button class="btn-primary" type="button" (click)="editingReview = null">إلغاء</button>
+    </div>
+  </div>
+  <div class="list">
+    <article class="list-item" *ngFor="let review of textReviews">
+      <div><strong>{{ review.name }}</strong><p>{{ review.text }}</p></div>
+      <div class="inline-actions">
+        <button class="btn-primary" type="button" (click)="startReview(review)">بدّل</button>
+        <button class="btn-danger" type="button" (click)="deleteReview(review.id)">احذف</button>
+      </div>
+    </article>
+  </div>
+</section>
+
+<section class="panel" *ngIf="activeTab === 'videos'">
+  <div class="panel-top">
+    <h3>فيديوهات الكليونات</h3>
+    <button class="btn-primary" type="button" (click)="startVideo()">زيد فيديو</button>
+  </div>
+  <div class="edit-card" *ngIf="editingVideo">
+    <h4>{{ editingVideo.name ? 'بدّل الفيديو' : 'فيديو جديد' }}</h4>
+    <div class="form-grid">
+      <label>الاسم <input [(ngModel)]="editingVideo.name" /></label>
+      <label>النشاط <input [(ngModel)]="editingVideo.role" placeholder="اختياري" /></label>
+      <label class="full">رابط يوتيوب <input [(ngModel)]="editingVideo.videoUrl" placeholder="اختياري" /></label>
+      <label>معرّف يوتيوب <input [(ngModel)]="editingVideo.videoId" placeholder="اختياري" /></label>
+      <label>اسم الملف <input [(ngModel)]="editingVideo.fileName" placeholder="اختياري" /></label>
+      <label>جودة الفيديو <input [(ngModel)]="editingVideo.videoQuality" placeholder="اختياري" /></label>
+      <label>المدة <input [(ngModel)]="editingVideo.duration" placeholder="اختياري" /></label>
+      <label class="full">الوصف <textarea rows="3" [(ngModel)]="editingVideo.desc" placeholder="اختياري"></textarea></label>
+      <label class="full">الوسوم (مفصولة بفاصلة) <input [(ngModel)]="tagInput" placeholder="اختياري" /></label>
+    </div>
+    <div class="inline-actions">
+      <button class="btn-cta" type="button" (click)="saveVideo()">احفظ</button>
+      <button class="btn-primary" type="button" (click)="editingVideo = null">إلغاء</button>
+    </div>
+  </div>
+  <div class="list">
+    <article class="list-item" *ngFor="let video of videoTestimonials">
+      <div>
+        <strong>{{ video.name }} — {{ video.role }}</strong>
+        <p *ngIf="video.videoUrl">الرابط: {{ video.videoUrl }}</p>
+        <p>المعرّف: {{ video.videoId }}</p>
+        <p *ngIf="video.fileName">الملف: {{ video.fileName }}</p>
+        <p *ngIf="video.videoQuality">الجودة: {{ video.videoQuality }}</p>
+        <p>{{ video.desc }}</p>
+      </div>
+      <div class="inline-actions">
+        <button class="btn-primary" type="button" (click)="startVideo(video)">بدّل</button>
+        <button class="btn-danger" type="button" (click)="deleteVideo(video.id)">احذف</button>
+      </div>
+    </article>
+  </div>
+</section>
+
+<section class="panel" *ngIf="activeTab === 'social' && socialProof">
+  <form class="form-grid" (ngSubmit)="saveSocialProof()">
+    <label class="full">نص الإحصائية <input [(ngModel)]="socialProof.statLabel" name="socialStat" /></label>
+    <div class="form-actions full"><button class="btn-cta" type="submit">احفظ الإثبات الاجتماعي</button></div>
+  </form>
+</section>
+
+<section class="panel" *ngIf="activeTab === 'instagram' && instagram">
+  <form class="form-grid" (ngSubmit)="saveInstagram()">
+    <label>الحساب <input [(ngModel)]="instagram.handle" name="igHandle" /></label>
+    <label>رابط إنستغرام <input [(ngModel)]="instagram.instagramUrl" name="igUrl" /></label>
+    <label>العنوان <input [(ngModel)]="instagram.title" name="igTitle" /></label>
+    <label>الكلمة المميزة <input [(ngModel)]="instagram.titleHighlight" name="igHighlight" /></label>
+    <label class="full">الوصف <input [(ngModel)]="instagram.subtitle" name="igSub" /></label>
+    <label>نص المتابعين <input [(ngModel)]="instagram.followerHighlight" name="igFollowers" /></label>
+    <label>نص الزر <input [(ngModel)]="instagram.ctaText" name="igCta" /></label>
+    <div class="form-actions full"><button class="btn-cta" type="submit">احفظ إنستغرام</button></div>
+  </form>
+  <div class="panel-top" style="margin-top: 24px">
+    <h3>الإحصائيات</h3>
+    <button class="btn-primary" type="button" (click)="startInstagramStat()">زيد إحصائية</button>
+  </div>
+  <div class="edit-card" *ngIf="editingInstagramStat">
+    <div class="form-grid">
+      <label>القيمة <input [(ngModel)]="editingInstagramStat.value" placeholder="364K" /></label>
+      <label>التسمية <input [(ngModel)]="editingInstagramStat.label" placeholder="متابعين" /></label>
+    </div>
+    <div class="inline-actions">
+      <button class="btn-cta" type="button" (click)="saveInstagramStat()">احفظ</button>
+      <button class="btn-primary" type="button" (click)="editingInstagramStat = null">إلغاء</button>
+    </div>
+  </div>
+  <div class="list">
+    <article class="list-item" *ngFor="let stat of instagram.stats">
+      <div><strong>{{ stat.value }}</strong><p>{{ stat.label }}</p></div>
+      <div class="inline-actions">
+        <button class="btn-primary" type="button" (click)="startInstagramStat(stat)">بدّل</button>
+        <button class="btn-danger" type="button" (click)="deleteInstagramStat(stat.id)">احذف</button>
+      </div>
+    </article>
+  </div>
+</section>
+
+<section class="panel" *ngIf="activeTab === 'pricing' && pricing">
+  <form class="form-grid" (ngSubmit)="savePricing()">
+    <label>العنوان <input [(ngModel)]="pricing.title" name="pricingTitle" /></label>
+    <label>الشارة <input [(ngModel)]="pricing.badge" name="pricingBadge" /></label>
+    <label class="full">العنوان الفرعي <input [(ngModel)]="pricing.subtitle" name="pricingSubtitle" /></label>
+    <label>السعر القديم <input type="number" [(ngModel)]="pricing.oldPrice" name="pricingOld" /></label>
+    <label>السعر الحالي <input type="number" [(ngModel)]="pricing.currentPrice" name="pricingCurrent" /></label>
+    <label>نسبة الخصم <input type="number" [(ngModel)]="pricing.discountPercent" name="pricingDiscount" /></label>
+    <label>العملة <input [(ngModel)]="pricing.currency" name="pricingCurrency" /></label>
+    <label class="full">ملاحظة السعر <input [(ngModel)]="pricing.note" name="pricingNote" /></label>
+    <label class="full">نص الاستعجال <input [(ngModel)]="pricing.urgency" name="pricingUrgency" /></label>
+    <label>
+      <span>تقسيط مفعّل</span>
+      <input type="checkbox" [(ngModel)]="pricing.installmentEnabled" name="pricingInstallment" />
+    </label>
+    <label>عدد الدفعات <input type="number" [(ngModel)]="pricing.installmentCount" name="pricingInstallmentCount" placeholder="اختياري" /></label>
+    <label>مبلغ كل دفعة <input type="number" [(ngModel)]="pricing.installmentAmount" name="pricingInstallmentAmount" placeholder="اختياري" /></label>
+    <div class="full">
+      <label>المميزات</label>
+      <div class="feature-row" *ngFor="let feature of pricing.features; let i = index">
+        <input class="full" [(ngModel)]="pricing.features[i]" [name]="'pricingFeature' + i" placeholder="اختياري" />
+        <button class="btn-danger" type="button" (click)="removePricingFeature(i)">احذف</button>
+      </div>
+      <button class="btn-primary" type="button" (click)="addPricingFeature()">زيد ميزة</button>
+    </div>
+    <div class="form-actions full"><button class="btn-cta" type="submit">احفظ الأسعار</button></div>
+  </form>
+</section>
+
+<section class="panel" *ngIf="activeTab === 'footer' && footer">
+  <form class="form-grid" (ngSubmit)="saveFooter()">
+    <label>اسم البراند <input [(ngModel)]="footer.brandName" name="footerBrand" /></label>
+    <label class="full">حقوق النشر <input [(ngModel)]="footer.copyright" name="footerCopyright" placeholder="اختياري" /></label>
+    <div class="form-actions full"><button class="btn-cta" type="submit">احفظ الفوتر</button></div>
+  </form>
+</section>
