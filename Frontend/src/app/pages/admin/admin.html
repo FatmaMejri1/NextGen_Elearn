@@ -4,13 +4,13 @@
       <div class="login-card panel">
         <a routerLink="/" class="back-link">← رجع للموقع</a>
         <p class="eyebrow">لوحة الإدارة</p>
-        <h1>سجّل الدخول باش تدير المنصة</h1>
-        <p class="status">{{ apiStatus }}</p>
+        <h1>سجّل الدخول باش تتحكم في المنصة</h1>
+        
 
         <form class="login-form" (ngSubmit)="login()">
           <label>
             الإيميل
-            <input type="email" [(ngModel)]="loginForm.email" name="adminEmail" placeholder="admin@email.com" autocomplete="email" required />
+            <input type="email" [(ngModel)]="loginForm.email" name="adminEmail" placeholder="name@example.com" autocomplete="email" required />
           </label>
           <label>
             كلمة السر
