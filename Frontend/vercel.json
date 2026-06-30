@@ -1,0 +1,5 @@
+{
+  "rewrites": [
+    { "source": "/api/:path*", "destination": "https://next-gen-elearn-du5w-1qjhg1uli-fatmamjr11-6891s-projects.vercel.app/api/:path*" }
+  ]
+}
