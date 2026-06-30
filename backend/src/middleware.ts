@@ -4,6 +4,7 @@ import { updateSession } from './lib/supabase/middleware';
 import { createAdminClient } from './lib/supabase/server';
 import { generateDeviceFingerprint, validateDevice } from './lib/device';
 
+export const runtime = 'nodejs';
 function addCorsHeaders(response: NextResponse, request: NextRequest) {
   const origin = request.headers.get('origin');
   const allowedOrigins = new Set([
