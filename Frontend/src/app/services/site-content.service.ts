@@ -329,6 +329,26 @@ function defaultContent(): SiteContent {
   };
 }
 
+/**
+ * Merge admin-saved navbar links with the code's current defaults.
+ * Keeps any admin customizations, but ensures every section link
+ * defined in code is always present (matched by href), so adding
+ * a new home-page section never makes the navbar fall out of sync.
+ */
+function mergeNavLinks(
+  saved: { id: string; label: string; href: string }[] | undefined,
+  defaults: { id: string; label: string; href: string }[],
+): { id: string; label: string; href: string }[] {
+  if (!saved || saved.length === 0) {
+    return defaults;
+  }
+
+  const savedHrefs = new Set(saved.map((link) => link.href));
+  const missingFromDefaults = defaults.filter((link) => !savedHrefs.has(link.href));
+
+  return [...saved, ...missingFromDefaults];
+}
+
 function normalizeContent(raw: Partial<SiteContent>): SiteContent {
   const defaults = defaultContent();
 
@@ -367,7 +387,7 @@ function normalizeContent(raw: Partial<SiteContent>): SiteContent {
       ...raw.navbar,
       loginText: raw.navbar?.loginText ?? defaults.navbar.loginText,
       loginLink: raw.navbar?.loginLink ?? defaults.navbar.loginLink,
-      links: raw.navbar?.links?.length ? raw.navbar.links : defaults.navbar.links,
+      links: mergeNavLinks(raw.navbar?.links, defaults.navbar.links),
     },
     footer: {
       ...defaults.footer,
